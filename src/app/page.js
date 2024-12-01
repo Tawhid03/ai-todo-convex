@@ -1,64 +1,65 @@
+
+//page.js
 "use client";
 
-import { useState } from "react";
+import { useMutation, useQuery } from "convex/react";
 import { NewToDoForm } from "./_component/new-todo-form";
+import { api } from "../../convex/_generated/api";
 
 export default function Home() {
-  const [todos, setTodos] = useState([]);
+  // Using Convex to manage todos
+  const todos = useQuery(api.functions.getTodos) || [];
+  const addTodoMutation = useMutation(api.functions.addTodo);
+  const toggleTodoMutation = useMutation(api.functions.toggleTodo);
+  const deleteTodoMutation = useMutation(api.functions.deleteTodo);
 
   // Function that will be passed to NewToDoForm as a prop
-  const handleAddTodo = (todo) => {
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      { id: prevTodos.length + 1, ...todo, completed: false },
-    ]);
+  const handleAddTodo = async (todo) => {
+    await addTodoMutation(todo);
+  };
+
+  // Function to toggle a todo's completed state
+  const handleToggleTodo = async (id) => {
+    await toggleTodoMutation({ id });
   };
 
   // Function to remove a todo
-  const handleRemoveTodo = (id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  const handleRemoveTodo = async (id) => {
+    await deleteTodoMutation({ id });
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-5">
-      <h1 className="text-3xl font-bold">To-Do List</h1>
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <h1 className="text-4xl font-bold text-center">To-Do List</h1>
 
       {/* Display todos */}
-      <ul className="space-y-2">
+      <ul className="space-y-4">
         {todos.length === 0 ? (
-          <p className="text-gray-500">No tasks available. Add your first task!</p>
+          <p className="text-gray-500 text-center">No tasks available. Add your first task!</p>
         ) : (
-          todos.map(({ id, title, description, completed }) => (
+          todos.map(({ _id, title, description, completed }) => (
             <li
-              key={id}
-              className={`flex items-center justify-between p-4 border rounded ${
-                completed ? "bg-green-100" : ""
+              key={_id}
+              className={`flex items-start justify-between p-5 border rounded-md shadow-md ${
+                completed ? "bg-green-100" : "bg-white"
               }`}
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-start space-x-4">
                 <input
                   type="checkbox"
                   checked={completed}
-                  onChange={() =>
-                    setTodos((prev) =>
-                      prev.map((todo) =>
-                        todo.id === id
-                          ? { ...todo, completed: !todo.completed }
-                          : todo
-                      )
-                    )
-                  }
-                  className="h-5 w-5"
+                  onChange={() => handleToggleTodo(_id)}
+                  className="h-5 w-5 mt-1"
                 />
                 <div>
-                  <p className="font-bold">{title}</p>
+                  <p className="font-bold text-xl">{title}</p>
                   <p className="text-gray-500">{description}</p>
                 </div>
               </div>
               {/* Remove button */}
               <button
-                onClick={() => handleRemoveTodo(id)}
-                className="bg-red-500 text-white px-4 py-1 rounded"
+                onClick={() => handleRemoveTodo(_id)}
+                className="text-red-500 text-sm font-bold hover:text-red-700 transition-all"
               >
                 Remove
               </button>
