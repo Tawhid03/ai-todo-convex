@@ -2,13 +2,15 @@
   "name": "ai-todo",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "vercel-build": "npx convex build && next build"
-  },
+  
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint",
+      "vercel-build": "npx convex dev --once && next build"
+    }
+  ,
   "dependencies": {
     "convex": "^1.17.3",
     "next": "^15.0.3",
