@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npx convex deploy && next build"
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "convex": "^1.17.3",
