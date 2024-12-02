@@ -1,9 +1,4 @@
 {
-
-  
-
-  
-  
   "name": "ai-todo",
   "version": "0.1.0",
   "private": true,
@@ -11,13 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "npx convex dev --once && npm run build" // Ensures Convex is initialized before Next.js builds
   },
   "dependencies": {
     "convex": "^1.17.3",
     "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react": "^19.0.0-rc-66855b96-20241106",
+    "react-dom": "^19.0.0-rc-66855b96-20241106",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "eslint": "^8",
@@ -25,4 +22,5 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }
-} 
+}
+
