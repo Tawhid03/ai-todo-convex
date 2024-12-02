@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npx convex dev --once && npm run build" // Ensures Convex is initialized before Next.js builds
+    "vercel-build": "npx convex dev --once && npm run build" 
   },
   "dependencies": {
     "convex": "^1.17.3",
