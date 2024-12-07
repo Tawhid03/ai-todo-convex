@@ -11,18 +11,30 @@ export default function ToDoList() {
 
   // Function to toggle a todo's completed state
   const handleToggleTodo = async (id) => {
-    await toggleTodoMutation({ id });
+    try {
+      await toggleTodoMutation({ id });
+    } catch (error) {
+      console.error("Failed to toggle todo:", error);
+      alert("Failed to update task status. Please try again.");
+    }
   };
 
   // Function to remove a todo
   const handleRemoveTodo = async (id) => {
-    await deleteTodoMutation({ id });
+    try {
+      await deleteTodoMutation({ id });
+    } catch (error) {
+      console.error("Failed to delete todo:", error);
+      alert("Failed to delete task. Please try again.");
+    }
   };
 
   return (
     <ul className="space-y-4">
       {todos.length === 0 ? (
-        <p className="text-gray-500 text-center">No tasks available. Add your first task!</p>
+        <p className="text-gray-500 text-center">
+          No tasks available. Add your first task!
+        </p>
       ) : (
         todos.map(({ _id, title, description, completed }) => (
           <li
@@ -32,6 +44,7 @@ export default function ToDoList() {
             }`}
           >
             <div className="flex items-start space-x-4">
+              {/* Checkbox for toggling completed state */}
               <input
                 type="checkbox"
                 checked={completed}

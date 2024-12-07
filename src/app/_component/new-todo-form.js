@@ -6,33 +6,46 @@ export function NewToDoForm({ onAddTodo }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (title.trim() === "") {
       alert("Title cannot be empty");
       return;
     }
-    // Call the `onAddTodo` function passed as a prop
-    onAddTodo({ title, description });
-    // Clear the input fields
-    setTitle("");
-    setDescription("");
+    try {
+      // Call the `onAddTodo` function passed as a prop
+      await onAddTodo({ title, description });
+      // Clear the input fields
+      setTitle("");
+      setDescription("");
+    } catch (error) {
+      console.error("Failed to add todo:", error);
+      alert("Failed to add task. Please try again.");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      <label className="font-bold">Title</label>
+      <label htmlFor="title" className="font-bold">
+        Title
+      </label>
       <input
+        id="title"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="border rounded p-2"
+        placeholder="Enter task title"
       />
-      <label className="font-bold">Description</label>
+      <label htmlFor="description" className="font-bold">
+        Description
+      </label>
       <textarea
+        id="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         className="border rounded p-2 h-10"
+        placeholder="Enter task description (optional)"
       />
       <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
         Add Task
