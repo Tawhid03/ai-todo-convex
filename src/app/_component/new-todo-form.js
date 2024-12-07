@@ -9,9 +9,10 @@ export function NewToDoForm({ onAddTodo }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim() === "") {
+      alert("Title cannot be empty");
       return;
     }
-    // Pass the new todo back to the parent
+    // Call the `onAddTodo` function passed as a prop
     onAddTodo({ title, description });
     // Clear the input fields
     setTitle("");
