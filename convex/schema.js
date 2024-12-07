@@ -6,7 +6,7 @@ const schema = defineSchema({
     title: v.string(),
     description: v.string(),
     completed: v.boolean(),
-    userId: v.optional(v.string()), // Make userId optional for existing records
+    userId: v.string(), // Ensure userId is defined
   }),
 });
 
