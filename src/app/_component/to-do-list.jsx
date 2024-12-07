@@ -9,21 +9,11 @@ export default function ToDoList() {
   const deleteTodoMutation = useMutation(api.functions.deleteTodo);
 
   const handleToggleTodo = async (id) => {
-    try {
-      await toggleTodoMutation({ id });
-    } catch (error) {
-      console.error("Failed to toggle todo:", error);
-      alert("Failed to update task status. Please try again.");
-    }
+    await toggleTodoMutation({ id });
   };
 
   const handleRemoveTodo = async (id) => {
-    try {
-      await deleteTodoMutation({ id });
-    } catch (error) {
-      console.error("Failed to delete todo:", error);
-      alert("Failed to delete task. Please try again.");
-    }
+    await deleteTodoMutation({ id });
   };
 
   return (

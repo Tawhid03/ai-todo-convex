@@ -6,7 +6,7 @@ const schema = defineSchema({
     title: v.string(),
     description: v.string(),
     completed: v.boolean(),
-    userId: v.string(), // Ensure userId is defined
+    userId: v.string(), // Associate todos with a user
   }),
 });
 

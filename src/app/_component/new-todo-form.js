@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
-export function NewToDoForm({ onAddTodo }) {
+export function NewToDoForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  const addTodoMutation = useMutation(api.functions.addTodo);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,29 +16,25 @@ export function NewToDoForm({ onAddTodo }) {
       alert("Title cannot be empty");
       return;
     }
-    await onAddTodo({ title, description });
+    await addTodoMutation({ title, description });
     setTitle("");
     setDescription("");
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      <label htmlFor="title" className="font-bold">Title</label>
+      <label className="font-bold">Title</label>
       <input
-        id="title"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="border rounded p-2"
-        placeholder="Enter task title"
       />
-      <label htmlFor="description" className="font-bold">Description</label>
+      <label className="font-bold">Description</label>
       <textarea
-        id="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         className="border rounded p-2 h-10"
-        placeholder="Enter task description (optional)"
       />
       <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
         Add Task
