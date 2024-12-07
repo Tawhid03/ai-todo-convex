@@ -1,10 +1,13 @@
 "use client";
 
-import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { ConvexReactClient } from "convex/react";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
+import { useAuth } from "@clerk/nextjs";
 import localFont from "next/font/local";
-import Provider from "./provider";
+import "./globals.css";
 
-// Load local fonts
+// Fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -16,14 +19,20 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export default function Layout({ children }) {
+// Convex Client
+const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
+
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Use Provider for Clerk and Convex */}
-        <Provider>{children}</Provider>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+            {children}
+          </ConvexProviderWithClerk>
+        </ClerkProvider>
       </body>
     </html>
   );
