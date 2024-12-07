@@ -12,23 +12,14 @@ export function NewToDoForm({ onAddTodo }) {
       alert("Title cannot be empty");
       return;
     }
-    try {
-      // Call the `onAddTodo` function passed as a prop
-      await onAddTodo({ title, description });
-      // Clear the input fields
-      setTitle("");
-      setDescription("");
-    } catch (error) {
-      console.error("Failed to add todo:", error);
-      alert("Failed to add task. Please try again.");
-    }
+    await onAddTodo({ title, description });
+    setTitle("");
+    setDescription("");
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      <label htmlFor="title" className="font-bold">
-        Title
-      </label>
+      <label htmlFor="title" className="font-bold">Title</label>
       <input
         id="title"
         type="text"
@@ -37,9 +28,7 @@ export function NewToDoForm({ onAddTodo }) {
         className="border rounded p-2"
         placeholder="Enter task title"
       />
-      <label htmlFor="description" className="font-bold">
-        Description
-      </label>
+      <label htmlFor="description" className="font-bold">Description</label>
       <textarea
         id="description"
         value={description}
