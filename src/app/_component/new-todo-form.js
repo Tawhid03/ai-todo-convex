@@ -1,22 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 
-export function NewToDoForm() {
+export function NewToDoForm({ onAddTodo }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const addTodoMutation = useMutation(api.functions.addTodo);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim() === "") {
       alert("Title cannot be empty");
       return;
     }
-    await addTodoMutation({ title, description });
+
+    onAddTodo({ title, description });
     setTitle("");
     setDescription("");
   };
