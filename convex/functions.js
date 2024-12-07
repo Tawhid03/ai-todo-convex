@@ -28,7 +28,7 @@ export const addTodo = mutationGeneric({
       title: args.title,
       description: args.description,
       completed: false,
-      userId, // Associate todo with the user
+      userId,
     };
     await ctx.db.insert("todos", todo);
   },

@@ -7,7 +7,7 @@ import { useAuth } from "@clerk/nextjs";
 import localFont from "next/font/local";
 import "./globals.css";
 
-// Fonts
+// Load local fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -19,7 +19,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-// Convex Client
+// Initialize Convex client
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
 
 export default function RootLayout({ children }) {
