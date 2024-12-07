@@ -2,7 +2,7 @@
 
 import { Authenticated, Unauthenticated } from "convex/react";
 import { SignInButton } from "@clerk/clerk-react";
-import { NewToDoForm } from "./_components/new-todo-form";
+import { NewToDoForm } from "./_component/new-todo-form";
 import  ToDoList  from "./_component/to-do-list";
 
 export default function Home() {

@@ -1,8 +1,10 @@
-"use client"
-import localFont from "next/font/local";
+"use client";
+
 import "./globals.css";
+import localFont from "next/font/local";
 import Provider from "./provider";
 
+// Load local fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -14,15 +16,14 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export default function RootLayout({ children }) {
+export default function Layout({ children }) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider>
-          {children}
-        </Provider>
+        {/* Use Provider for Clerk and Convex */}
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
