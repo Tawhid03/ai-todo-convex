@@ -10,12 +10,14 @@ export default function Home() {
     <div className="max-w-screen-md mx-auto p-4 space-y-4">
       <h1 className="text-xl font-bold">To-Do List</h1>
 
+      {/* Authenticated View */}
       <Authenticated>
         <UserButton />
         <ToDoList />
         <NewToDoForm />
       </Authenticated>
 
+      {/* Unauthenticated View */}
       <Unauthenticated>
         <div className="text-center space-y-4">
           <p className="text-gray-700">Please sign in to manage your tasks.</p>

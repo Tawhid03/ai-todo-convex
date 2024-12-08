@@ -1,41 +1,47 @@
 "use client";
 
+
 import { useState } from "react";
 
+
 export function NewToDoForm({ onAddTodo }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+ const [title, setTitle] = useState("");
+ const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (title.trim() === "") {
-      alert("Title cannot be empty");
-      return;
-    }
 
-    onAddTodo({ title, description });
-    setTitle("");
-    setDescription("");
-  };
+ const handleSubmit = (e) => {
+   e.preventDefault();
+   if (title.trim() === "") {
+     alert("Title cannot be empty");
+     return;
+   }
+   // Call the `onAddTodo` function passed as a prop
+   onAddTodo({ title, description });
+   // Clear the input fields
+   setTitle("");
+   setDescription("");
+ };
 
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      <label className="font-bold">Title</label>
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="border rounded p-2"
-      />
-      <label className="font-bold">Description</label>
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="border rounded p-2 h-10"
-      />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Add Task
-      </button>
-    </form>
-  );
+
+ return (
+   <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+     <label className="font-bold">Title</label>
+     <input
+       type="text"
+       value={title}
+       onChange={(e) => setTitle(e.target.value)}
+       className="border rounded p-2"
+     />
+     <label className="font-bold">Description</label>
+     <textarea
+       value={description}
+       onChange={(e) => setDescription(e.target.value)}
+       className="border rounded p-2 h-10"
+     />
+     <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+       Add Task
+     </button>
+   </form>
+ );
 }
+
