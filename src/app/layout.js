@@ -1,39 +1,75 @@
-"use client";
+import { queryGeneric, mutationGeneric } from "convex/server";
+import { v } from "convex/values";
 
-import { ClerkProvider } from "@clerk/nextjs";
-import { ConvexReactClient } from "convex/react";
-import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { useAuth } from "@clerk/nextjs";
-import localFont from "next/font/local";
-import "./globals.css";
+// Get todos specific to the logged-in user
+export const getTodos = queryGeneric({
+  handler: async (ctx) => {
+    const userId = ctx.auth.identity?.userId;
+    if (!userId) {
+      throw new Error("User is not authenticated");
+    }
 
-// Load local fonts
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+    return await ctx.db.query("todos").filter({ userId }).collect();
+  },
 });
 
-// Initialize Convex client
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
+// Add a new todo specific to the logged-in user
+export const addTodo = mutationGeneric({
+  args: {
+    title: v.string(),
+    description: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = ctx.auth.identity?.userId;
+    if (!userId) {
+      throw new Error("User is not authenticated");
+    }
 
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-            {children}
-          </ConvexProviderWithClerk>
-        </ClerkProvider>
-      </body>
-    </html>
-  );
-}
+    const todo = {
+      userId,
+      title: args.title,
+      description: args.description,
+      completed: false,
+    };
+    await ctx.db.insert("todos", todo);
+  },
+});
+
+// Toggle a todo's completed state
+export const toggleTodo = mutationGeneric({
+  args: {
+    id: v.id("todos"),
+  },
+  handler: async (ctx, args) => {
+    const userId = ctx.auth.identity?.userId;
+    if (!userId) {
+      throw new Error("User is not authenticated");
+    }
+
+    const todo = await ctx.db.get(args.id);
+    if (!todo || todo.userId !== userId) {
+      throw new Error("Todo not found or unauthorized");
+    }
+    await ctx.db.patch(args.id, { completed: !todo.completed });
+  },
+});
+
+// Delete a todo
+export const deleteTodo = mutationGeneric({
+  args: {
+    id: v.id("todos"),
+  },
+  handler: async (ctx, args) => {
+    const userId = ctx.auth.identity?.userId;
+    if (!userId) {
+      throw new Error("User is not authenticated");
+    }
+
+    const todo = await ctx.db.get(args.id);
+    if (!todo || todo.userId !== userId) {
+      throw new Error("Todo not found or unauthorized");
+    }
+    await ctx.db.delete(args.id);
+  },
+});
+
