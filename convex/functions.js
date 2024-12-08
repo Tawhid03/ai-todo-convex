@@ -1,72 +1,75 @@
 import { queryGeneric, mutationGeneric } from "convex/server";
 import { v } from "convex/values";
 
-// Query to get todos belonging to the signed-in user
+// Get todos specific to the logged-in user
 export const getTodos = queryGeneric({
   handler: async (ctx) => {
-    const userId = ctx.auth?.userId; // Get userId from auth context
+    const userId = ctx.auth.identity?.userId;
     if (!userId) {
-      throw new Error("User not authenticated");
+      throw new Error("User is not authenticated");
     }
+
     return await ctx.db.query("todos").filter({ userId }).collect();
   },
 });
 
-// Mutation to add a new todo
+// Add a new todo specific to the logged-in user
 export const addTodo = mutationGeneric({
   args: {
     title: v.string(),
     description: v.string(),
   },
   handler: async (ctx, args) => {
-    const userId = ctx.auth?.userId; // Get userId from auth context
+    const userId = ctx.auth.identity?.userId;
     if (!userId) {
-      throw new Error("User not authenticated");
+      throw new Error("User is not authenticated");
     }
 
     const todo = {
+      userId,
       title: args.title,
       description: args.description,
       completed: false,
-      userId, // Link todo to the user
     };
-
     await ctx.db.insert("todos", todo);
   },
 });
 
-// Mutation to toggle a todo's completion status
+// Toggle a todo's completed state
 export const toggleTodo = mutationGeneric({
   args: {
     id: v.id("todos"),
   },
   handler: async (ctx, args) => {
-    const todo = await ctx.db.get(args.id);
-    if (!todo) throw new Error("Todo not found");
-
-    const userId = ctx.auth?.userId; // Ensure the todo belongs to the user
-    if (todo.userId !== userId) {
-      throw new Error("Not authorized to modify this todo");
+    const userId = ctx.auth.identity?.userId;
+    if (!userId) {
+      throw new Error("User is not authenticated");
     }
 
+    const todo = await ctx.db.get(args.id);
+    if (!todo || todo.userId !== userId) {
+      throw new Error("Todo not found or unauthorized");
+    }
     await ctx.db.patch(args.id, { completed: !todo.completed });
   },
 });
 
-// Mutation to delete a todo
+// Delete a todo
 export const deleteTodo = mutationGeneric({
   args: {
     id: v.id("todos"),
   },
   handler: async (ctx, args) => {
-    const todo = await ctx.db.get(args.id);
-    if (!todo) throw new Error("Todo not found");
-
-    const userId = ctx.auth?.userId; // Ensure the todo belongs to the user
-    if (todo.userId !== userId) {
-      throw new Error("Not authorized to delete this todo");
+    const userId = ctx.auth.identity?.userId;
+    if (!userId) {
+      throw new Error("User is not authenticated");
     }
 
+    const todo = await ctx.db.get(args.id);
+    if (!todo || todo.userId !== userId) {
+      throw new Error("Todo not found or unauthorized");
+    }
     await ctx.db.delete(args.id);
   },
 });
+

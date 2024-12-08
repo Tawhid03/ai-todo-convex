@@ -8,12 +8,28 @@ export default function ToDoList() {
   const toggleTodoMutation = useMutation(api.functions.toggleTodo);
   const deleteTodoMutation = useMutation(api.functions.deleteTodo);
 
+  if (!todos) {
+    return <p className="text-center text-gray-500">Loading todos...</p>;
+  }
+
+  if (todos instanceof Error) {
+    return <p className="text-center text-red-500">Error loading todos.</p>;
+  }
+
   const handleToggleTodo = async (id) => {
-    await toggleTodoMutation({ id });
+    try {
+      await toggleTodoMutation({ id });
+    } catch (error) {
+      console.error("Failed to toggle todo:", error);
+    }
   };
 
   const handleRemoveTodo = async (id) => {
-    await deleteTodoMutation({ id });
+    try {
+      await deleteTodoMutation({ id });
+    } catch (error) {
+      console.error("Failed to delete todo:", error);
+    }
   };
 
   return (

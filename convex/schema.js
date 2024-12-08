@@ -3,10 +3,10 @@ import { v } from "convex/values";
 
 const schema = defineSchema({
   todos: defineTable({
-    title: v.string(),
-    description: v.string(),
-    completed: v.boolean(),
-    userId: v.string(), // Add the userId field
+    userId: v.string(),        // Link todos to a user
+    title: v.string(),         // Todo title
+    description: v.string(),   // Todo description
+    completed: v.boolean(),    // Completed state
   }),
 });
 
