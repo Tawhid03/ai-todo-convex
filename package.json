@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/swc-wasm-nodejs": "^15.0.4",
+    "convex": "^1.17.3",
     "next": "^15.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
