@@ -3,14 +3,14 @@
 "use client";
 
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import NewTodoForm from "./_components/new-todo-form";
 
 export default function Home() {
-  const todos = useQuery(api.getTodos) || [];
-  const addTodo = useMutation(api.addTodo);
-  const toggleTodo = useMutation(api.toggleTodo);
-  const deleteTodo = useMutation(api.deleteTodo);
+  const todos = useQuery(api.todos.getTodos) || [];
+  const addTodo = useMutation(api.todos.addTodo);
+  const toggleTodo = useMutation(api.todos.toggleTodo);
+  const deleteTodo = useMutation(api.todos.deleteTodo);
 
   return (
     <div>
