@@ -1,25 +1,31 @@
 // File: convex/functions.js
 
-import { query, mutation } from "convex/server";
+import { defineQuery, defineMutation } from "convex/server";
 
 export const todos = {
-  getTodos: query(async ({ db }) => {
+  // Fetch all todos
+  getTodos: defineQuery(async ({ db }) => {
     return await db.table("todos").collect();
   }),
-  addTodo: mutation(async ({ db }, { title, description }) => {
+
+  // Add a new todo
+  addTodo: defineMutation(async ({ db }, { title, description }) => {
     return await db.table("todos").insert({
       title,
       description,
       completed: false,
     });
   }),
-  toggleTodo: mutation(async ({ db }, { id }) => {
+
+  // Toggle the completed status of a todo
+  toggleTodo: defineMutation(async ({ db }, { id }) => {
     const todo = await db.table("todos").get(id);
     if (!todo) throw new Error("Todo not found");
     return await db.table("todos").update(id, { completed: !todo.completed });
   }),
-  deleteTodo: mutation(async ({ db }, { id }) => {
+
+  // Delete a todo
+  deleteTodo: defineMutation(async ({ db }, { id }) => {
     return await db.table("todos").delete(id);
   }),
 };
-
