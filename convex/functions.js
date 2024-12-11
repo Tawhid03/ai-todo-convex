@@ -1,6 +1,5 @@
 // File: convex/functions.js
-import { query, mutation } from "convex/server";
-import { v } from "convex/values";
+import { query, mutation } from "../convex/_generated/server";
 
 // Query to fetch all todos
 export const getTodos = query(async ({ db }) => {
