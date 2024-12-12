@@ -1,6 +1,6 @@
 "use client";
 
-import { api } from "../../convex/_generated/api";
+import { api } from "../../convex/_generated/api.js";
 import { useQuery, useMutation } from "convex/react";
 import { useState } from "react";
 
@@ -25,21 +25,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Todo List</h1>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-      <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
-      <button onClick={handleAddTodo}>Add Todo</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo._id}>
-            {todo.title} - {todo.description}
-            <button onClick={() => toggleTodo({ id: todo._id })}>
-              {todo.completed ? "Mark Incomplete" : "Mark Complete"}
-            </button>
-            <button onClick={() => deleteTodo({ id: todo._id })}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {/* Your UI here */}
     </div>
   );
 }

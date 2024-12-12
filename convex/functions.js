@@ -1,8 +1,9 @@
 // File: convex/functions.js
-import { query, mutation } from "../convex/_generated/server.js";
+import { query, mutation } from "../convex/_generated/server.js"; // Include ".js" to explicitly state the file type.
 
 // Query to fetch all todos
 export const getTodos = query(async ({ db }) => {
+  console.log("Fetching todos from the database...");
   return await db.query("todos").collect();
 });
 
