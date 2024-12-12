@@ -5,6 +5,7 @@
 import { api } from "../../convex/_generated/api";
 import { useQuery, useMutation } from "convex/react";
 import { useState } from "react";
+import schema from "../../convex/schema";
 
 export default function Home() {
   const todos = useQuery(api.todos.getTodos) || [];
