@@ -1,7 +1,6 @@
-// File: src/app/page.js
 "use client";
 
-import { api } from "../../convex/_generated/api.js";
+import { api } from "../../convex/_generated/api";
 import { useQuery, useMutation } from "convex/react";
 import { useState } from "react";
 
@@ -25,32 +24,18 @@ export default function Home() {
   };
 
   return (
-    <div style={{ padding: "1rem", maxWidth: "600px", margin: "0 auto" }}>
-      <h1>AI Todo List</h1>
-      <div>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
-        />
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description"
-        />
-        <button onClick={handleAddTodo}>Add Todo</button>
-      </div>
+    <div>
+      <h1>Todo List</h1>
+      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+      <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
+      <button onClick={handleAddTodo}>Add Todo</button>
       <ul>
         {todos.map((todo) => (
           <li key={todo._id}>
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTodo({ id: todo._id })}
-            />
             {todo.title} - {todo.description}
+            <button onClick={() => toggleTodo({ id: todo._id })}>
+              {todo.completed ? "Mark Incomplete" : "Mark Complete"}
+            </button>
             <button onClick={() => deleteTodo({ id: todo._id })}>Delete</button>
           </li>
         ))}
